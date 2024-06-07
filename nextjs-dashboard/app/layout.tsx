@@ -13,9 +13,6 @@ export default function RootLayout({
       <body>
         {children}
       </body>
-      <footer className={`${aladin.className} flex justify-center item-center`}>
-        <h1 >Esto lo hizo CarlosGlez</h1>
-      </footer>
     </html>
   );
 }
