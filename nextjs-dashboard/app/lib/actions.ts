@@ -1,0 +1,1 @@
+'use server' //Aquí va todo lo referente con crear, borrar, cambiar datos. Todo lo relacionado con el servidor

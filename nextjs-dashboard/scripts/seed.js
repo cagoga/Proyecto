@@ -19,9 +19,6 @@ async function seedUsers(client) {
         password TEXT NOT NULL
       );
     `;
-
-    console.log(`Created "users" table`);
-
     // Insert data into the "users" table
     const insertedUsers = await Promise.all(
       users.map(async (user) => {
@@ -34,8 +31,8 @@ async function seedUsers(client) {
       }),
     );
 
-    console.log(`Seeded ${insertedUsers.length} users`);
-
+/*     console.log(`Seeded ${insertedUsers.length} users`);
+ */
     return {
       createTable,
       users: insertedUsers,
@@ -125,7 +122,7 @@ async function seedCustomers(client) {
   }
 }
 
-async function seedRevenue(client) {
+async function seedRevenue(client) {//swap revenue for hou
   try {
     // Create the "revenue" table if it doesn't exist
     const createTable = await client.sql`
