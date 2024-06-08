@@ -20,7 +20,7 @@ export async function fetchRevenue() {
 
     const data = await sql<Hours>`SELECT * FROM revenue`;
 
-    console.log(data);
+    //console.log(data);
 
     return data.rows;
   } catch (error) {

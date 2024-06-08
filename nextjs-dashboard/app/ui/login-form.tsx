@@ -6,10 +6,11 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
+import { login } from '../lib/actions';
 
 export default function LoginForm() {
   return (
-    <form className="space-y-3">
+    <form className="space-y-3" method='post' action={login}>
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${aladin.className} mb-3 text-2xl`}>
           Please log in to continue.
@@ -66,7 +67,7 @@ export default function LoginForm() {
 
 function LoginButton() {
   return (
-    <Button className="mt-4 w-full">
+    <Button className="mt-4 w-full" action={login}>
       Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );

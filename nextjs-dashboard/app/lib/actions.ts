@@ -31,7 +31,6 @@ export async function createInvoice(formData: FormData) {
     })
 
     const [date] = new Date().toISOString().split('T')
-    console.log({ customerId, amount, status })
 
     //Este sql es un metodo concreto de Vercel que le estamos pasando parametros. Es a prueba de inyección de código ya que automaticamente lo limpia.
     await sql`
@@ -43,4 +42,28 @@ export async function createInvoice(formData: FormData) {
     revalidatePath('/dashboard/invoices')
     //Por ultimo mandamos al usuario a la pagina anterior para que vea que ha creado los datos
     redirect('/dashboard/invoices')
+}
+
+export async function login(formData: FormData) {
+    const email = formData.get('email') as string;
+    const pass = formData.get('password') as string;
+    
+    const data: any = await sql`
+    SELECT COUNT(*) FROM users WHERE email = ${email} and password = ${pass}
+    `
+
+    data.rows[0].count == 0 ? redirect('/login/invalidLogin') : redirect('/dashboard') 
+}
+
+export async function signUp(formData: FormData) {
+
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const pass = formData.get('password') as string;
+    
+    await sql`
+    INSERT INTO users (name, email, password)
+    VALUES (${name},${email},${pass})
+    `
+    redirect('/dashboard')
 }
