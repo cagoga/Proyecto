@@ -7,6 +7,8 @@ import { stat } from 'fs'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+import bcrypt from 'bcrypt'
+
 /* Creamos un "esquema" de validación de datos que vamos a mandar a la BBDD
  */
 const Schema = z.object({
@@ -60,10 +62,12 @@ export async function signUp(formData: FormData) {
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const pass = formData.get('password') as string;
+    const hashedPassword = await bcrypt.hash(pass, 10);
+
     
     await sql`
     INSERT INTO users (name, email, password)
-    VALUES (${name},${email},${pass})
+    VALUES (${name},${email},${hashedPassword})
     `
     redirect('/dashboard')
 }
