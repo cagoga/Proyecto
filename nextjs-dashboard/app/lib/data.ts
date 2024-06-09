@@ -1,51 +1,49 @@
 import { sql } from '@vercel/postgres';
 import {
-  CustomerField,
-  CustomersTableType,
-  InvoiceForm,
-  InvoicesTable,
-  LatestInvoiceRaw,
+  PlayerField,
+  PlayersTableType,
+  SheetForm,
+  SheetsTable,
+  LatestSheetRaw,
   User,
   Hours,
 } from './definitions';
 import { formatCurrency } from './utils';
 
 export async function fetchRevenue() {
-  // Add noStore() here to prevent the response from being cached.
-  // This is equivalent to in fetch(..., {cache: 'no-store'}).
 
   try {
    
     await new Promise((resolve) => setTimeout(resolve, 3000));//lo uso para hacer una simulación y que se vea el skeleton
 
-    const data = await sql<Hours>`SELECT * FROM revenue`;
+    const data = await sql<Hours>`SELECT * FROM hours`;
 
     //console.log(data);
 
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
+    throw new Error('Failed to fetch hours data.');
   }
 }
 
-export async function fetchLatestInvoices() {
+export async function fetchLatestSheets() {
   try {
-    const data = await sql<LatestInvoiceRaw>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
-      ORDER BY invoices.date DESC
+    const data = await sql<LatestSheetRaw>`
+      SELECT sheets.amount, players.name, players.image_url, players.email, sheets.id
+      FROM sheets
+      JOIN players ON sheets.player_id = players.id
+      ORDER BY sheets.date DESC
       LIMIT 5`;
-
-    const latestInvoices = data.rows.map((invoice) => ({
-      ...invoice,
-      amount: formatCurrency(invoice.amount),
+    //console.log(data);
+    const latestSheets = data.rows.map((Sheet) => ({
+      ...Sheet,
+      amount: formatCurrency(Sheet.amount),
     }));
-    return latestInvoices;
+    return latestSheets;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest invoices.');
+    throw new Error('Failed to fetch the latest Sheets.');
   }
 }
 
@@ -54,29 +52,29 @@ export async function fetchCardData() {
     // You can probably combine these into a single SQL search
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
+    const SheetCountPromise = sql`SELECT COUNT(*) FROM Sheets`;
+    const playerCountPromise = sql`SELECT COUNT(*) FROM players`;
+    const SheetStatusPromise = sql`SELECT
          SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+         FROM Sheets`;
 
     const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
+      SheetCountPromise,
+      playerCountPromise,
+      SheetStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    const numberOfSheets = Number(data[0].rows[0].count ?? '0');
+    const numberOfPlayers = Number(data[1].rows[0].count ?? '0');
+    const totalPaidSheets = formatCurrency(data[2].rows[0].paid ?? '0');
+    const totalPendingSheets = formatCurrency(data[2].rows[0].pending ?? '0');
 
     return {
-      numberOfCustomers,
-      numberOfInvoices,
-      totalPaidInvoices,
-      totalPendingInvoices,
+      numberOfPlayers,
+      numberOfSheets,
+      totalPaidSheets,
+      totalPendingSheets,
     };
   } catch (error) {
     console.error('Database Error:', error);
@@ -85,135 +83,134 @@ export async function fetchCardData() {
 }
 
 const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(
+export async function fetchFilteredSheets(
   search: string,
   currentPage: number,
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const invoices = await sql<InvoicesTable>`
+    const Sheets = await sql<SheetsTable>`
       SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        customers.name,
-        customers.email,
-        customers.image_url
-      FROM invoices
-      JOIN customers ON invoices.customer_id = customers.id
+        sheets.id,
+        sheets.amount,
+        sheets.date,
+        players.status,
+        players.name,
+        players.email,
+        players.image_url
+      FROM sheets
+      JOIN players ON sheets.player_id = players.id
       WHERE
-        customers.name ILIKE ${`%${search}%`} OR
-        customers.email ILIKE ${`%${search}%`} OR
-        invoices.amount::text ILIKE ${`%${search}%`} OR
-        invoices.date::text ILIKE ${`%${search}%`} OR
-        invoices.status ILIKE ${`%${search}%`}
-      ORDER BY invoices.date DESC
+        players.name ILIKE ${`%${search}%`} OR
+        players.email ILIKE ${`%${search}%`} OR
+        sheets.amount::text ILIKE ${`%${search}%`} OR
+        sheets.date::text ILIKE ${`%${search}%`} OR
+        players.status ILIKE ${`%${search}%`}
+      ORDER BY sheets.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    return invoices.rows;
+    return Sheets.rows;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+    throw new Error('Failed to fetch Sheets.');
   }
 }
 
-export async function fetchInvoicesPages(search: string) {
+export async function fetchSheetsPages(search: string) {
   try {
     const count = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
+    FROM sheets
+    JOIN players ON sheets.player_id = players.id
     WHERE
-      customers.name ILIKE ${`%${search}%`} OR
-      customers.email ILIKE ${`%${search}%`} OR
-      invoices.amount::text ILIKE ${`%${search}%`} OR
-      invoices.date::text ILIKE ${`%${search}%`} OR
-      invoices.status ILIKE ${`%${search}%`}
+      players.name ILIKE ${`%${search}%`} OR
+      players.email ILIKE ${`%${search}%`} OR
+      sheets.amount::text ILIKE ${`%${search}%`} OR
+      sheets.date::text ILIKE ${`%${search}%`} OR
+      players.status ILIKE ${`%${search}%`}
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    throw new Error('Failed to fetch total number of Sheets.');
   }
 }
 
-export async function fetchInvoiceById(id: string) {
+export async function fetchSheetById(id: string) {
   try {
-    const data = await sql<InvoiceForm>`
+    const data = await sql<SheetForm>`
       SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
+        Sheets.id,
+        Sheets.player_id,
+        Sheets.amount,
+        Sheets.status
+      FROM Sheets
+      WHERE Sheets.id = ${id};
     `;
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
+    const Sheet = data.rows.map((Sheet) => ({
+      ...Sheet,
+      amount: Sheet.amount / 10,
     }));
 
-    return invoice[0];
+    return Sheet[0];
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
+    throw new Error('Failed to fetch Sheet.');
   }
 }
 
-export async function fetchCustomers() {
+export async function fetchPlayers() {
   try {
-    const data = await sql<CustomerField>`
+    const data = await sql<PlayerField>`
       SELECT
         id,
         name
-      FROM customers
+      FROM players
       ORDER BY name ASC
     `;
 
-    const customers = data.rows;
-    return customers;
+    const players = data.rows;
+    return players;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
+    throw new Error('Failed to fetch all players.');
   }
 }
 
-export async function fetchFilteredCustomers(search: string) {
+export async function fetchFilteredPlayers(search: string) {
   try {
-    const data = await sql<CustomersTableType>`
+    const data = await sql<PlayersTableType>`
 		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
+		  players.id,
+		  players.name,
+		  players.email,
+		  players.image_url,
+		  COUNT(Sheets.id) AS total_Sheets,
+		  SUM(CASE WHEN Sheets.status = 'pending' THEN Sheets.amount ELSE 0 END) AS total_pending,
+		  SUM(CASE WHEN Sheets.status = 'paid' THEN Sheets.amount ELSE 0 END) AS total_paid
+		FROM players
+		LEFT JOIN Sheets ON players.id = Sheets.player_id
 		WHERE
-		  customers.name ILIKE ${`%${search}%`} OR
-        customers.email ILIKE ${`%${search}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
+		  players.name ILIKE ${`%${search}%`} OR
+        players.email ILIKE ${`%${search}%`}
+		GROUP BY players.id, players.name, players.email, players.image_url
+		ORDER BY players.name ASC
 	  `;
 
-    const customers = data.rows.map((customer) => ({
-      ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
+    const players = data.rows.map((player) => ({
+      ...player,
+      total_pending: formatCurrency(player.total_jugador),
+      total_paid: formatCurrency(player.total_master),
     }));
 
-    return customers;
+    return players;
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to fetch customer table.');
+    throw new Error('Failed to fetch player table.');
   }
 }
 

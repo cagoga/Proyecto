@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { fetchLatestInvoices, fetchRevenue } from "../lib/data"
+import { fetchLatestSheets, fetchRevenue } from "../lib/data"
 import HoursChart from "../ui/dashboard/hours-chart";
-import LatestInvoices from "../ui/dashboard/latest-invoices";
+import LatestInvoices from "../ui/dashboard/latest-sheets";
 import { vampiro } from "../ui/fonts";
 import { RevenueChartSkeleton } from "../ui/skeletons";
 

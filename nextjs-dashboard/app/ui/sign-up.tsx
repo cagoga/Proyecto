@@ -76,7 +76,6 @@ export default function SignUpForm() {
           </div>
           <SignUpButton />
           <div className="flex h-8 items-end space-x-1">
-            {/* Add form errors here */}
           </div>
         </div>
         </div> 

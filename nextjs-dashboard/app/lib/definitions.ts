@@ -1,7 +1,6 @@
-// This file contains type definitions for your data.
-// It describes the shape of the data, and what data type each property should accept.
-// For simplicity of teaching, we're manually defining these types.
-// However, these types are generated automatically if you're using an ORM such as Prisma.
+// This file contains type definitions for your data. En este archivo vamos a crear las definiciones de nuestros datos
+// Cada tipo de dato tendra unas variables y en estas estaran definida su timpado
+
 export type User = {
   id: string;
   name: string;
@@ -9,27 +8,27 @@ export type User = {
   password: string;
 };
 
-export type Customer = {
+export type Player = {
   id: string;
   name: string;
   email: string;
   image_url: string;
+  status: 'jugador' | 'master';
 };
 
-export type Invoice = {
+export type Sheet = {
   id: string;
-  customer_id: string;
+  player_id: string;
   amount: number;
   date: string;
-  status: 'pending' | 'paid';
 };
 
 export type Hours = {
   month: string;
-  revenue: number;
+  hours: number;
 };
 
-export type LatestInvoice = {
+export type LatestSheet = {
   id: string;
   name: string;
   image_url: string;
@@ -37,11 +36,11 @@ export type LatestInvoice = {
   amount: number;
 };
 
-export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
+export type LatestSheetRaw = Omit<LatestSheet, 'amount'> & {
   amount: number;
 };
 
-export type InvoicesTable = {
+export type SheetsTable = {
   id: string;
   customer_id: string;
   name: string;
@@ -49,37 +48,37 @@ export type InvoicesTable = {
   image_url: string;
   date: string;
   amount: number;
-  status: 'pending' | 'paid';
+  status: 'jugador' | 'master';
 };
 
-export type CustomersTableType = {
+export type PlayersTableType = {
   id: string;
   name: string;
   email: string;
   image_url: string;
-  total_invoices: number;
-  total_pending: number;
-  total_paid: number;
+  total_Sheets: number;
+  total_jugador: number;
+  total_master: number;
 };
 
-export type FormattedCustomersTable = {
+export type FormattedPlayersTable = {
   id: string;
   name: string;
   email: string;
   image_url: string;
-  total_invoices: number;
-  total_pending: string;
-  total_paid: string;
+  total_Sheets: number;
+  total_jugador: string;
+  total_master: string;
 };
 
-export type CustomerField = {
+export type PlayerField = {
   id: string;
   name: string;
 };
 
-export type InvoiceForm = {
+export type SheetForm = {
   id: string;
   customer_id: string;
   amount: number;
-  status: 'pending' | 'paid';
+  status: 'jugador' | 'master';
 };
