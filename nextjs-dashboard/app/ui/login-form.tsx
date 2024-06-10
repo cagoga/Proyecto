@@ -7,6 +7,7 @@ import {
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
 import { login } from '../lib/actions';
+import Link from 'next/link';
 
 export default function LoginForm() {
   return (
@@ -52,14 +53,19 @@ export default function LoginForm() {
                 required
                 minLength={6}
               />
-              <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-red-500 peer-focus:text-red-900" />
             </div>
           </div>
         </div>
         <LoginButton />
         <div className="flex h-8 items-end space-x-1">
-          {/* Add form errors here */}
         </div>
+        <Link
+          href="/"
+          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-red-200"
+        >
+          Cancel
+        </Link>
       </div>
     </form>
   );

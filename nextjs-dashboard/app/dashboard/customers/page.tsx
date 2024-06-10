@@ -1,3 +1,7 @@
+import PlayersTable from "@/app/ui/customers/table";
+
 export default function PageCustomers(){
-    return <p>Pagina de los jugadores </p>
+    return <p>
+        <PlayersTable players={players: FormattedPlayersTable[]}/>
+         </p>
 }

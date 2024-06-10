@@ -1,30 +1,30 @@
 import Image from 'next/image';
-import { lusitana } from '@/app/ui/fonts';
+import { vampiro } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import {
-  CustomersTableType,
-  FormattedCustomersTable,
+  PlayersTableType,
+  FormattedPlayersTable,
 } from '@/app/lib/definitions';
 
-export default async function CustomersTable({
-  customers,
+export default async function PlayersTable({
+  players,
 }: {
-  customers: FormattedCustomersTable[];
+  players: FormattedPlayersTable[];
 }) {
   return (
     <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
-        Customers
+      <h1 className={`${vampiro.className} mb-8 text-xl md:text-2xl`}>
+        Players
       </h1>
-      <Search placeholder="Search customers..." />
+      <Search placeholder="Search players..." />
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
               <div className="md:hidden">
-                {customers?.map((customer) => (
+                {players?.map((player) => (
                   <div
-                    key={customer.id}
+                    key={player.id}
                     className="mb-2 w-full rounded-md bg-white p-4"
                   >
                     <div className="flex items-center justify-between border-b pb-4">
@@ -32,32 +32,32 @@ export default async function CustomersTable({
                         <div className="mb-2 flex items-center">
                           <div className="flex items-center gap-3">
                             <Image
-                              src={customer.image_url}
+                              src={player.image_url}
                               className="rounded-full"
-                              alt={`${customer.name}'s profile picture`}
+                              alt={`${player.name}'s profile picture`}
                               width={28}
                               height={28}
                             />
-                            <p>{customer.name}</p>
+                            <p>{player.name}</p>
                           </div>
                         </div>
                         <p className="text-sm text-gray-500">
-                          {customer.email}
+                          {player.email}
                         </p>
                       </div>
                     </div>
                     <div className="flex w-full items-center justify-between border-b py-5">
                       <div className="flex w-1/2 flex-col">
-                        <p className="text-xs">Pending</p>
-                        <p className="font-medium">{customer.total_pending}</p>
+                        <p className="text-xs">Jugador</p>
+                        <p className="font-medium">{player.total_jugador}</p>
                       </div>
                       <div className="flex w-1/2 flex-col">
-                        <p className="text-xs">Paid</p>
-                        <p className="font-medium">{customer.total_paid}</p>
+                        <p className="text-xs">Master</p>
+                        <p className="font-medium">{player.total_master}</p>
                       </div>
                     </div>
                     <div className="pt-4 text-sm">
-                      <p>{customer.total_invoices} invoices</p>
+                      <p>{player.total_Sheets} Sesiones</p>
                     </div>
                   </div>
                 ))}
@@ -72,43 +72,43 @@ export default async function CustomersTable({
                       Email
                     </th>
                     <th scope="col" className="px-3 py-5 font-medium">
-                      Total Invoices
+                      Total Sesiones
                     </th>
                     <th scope="col" className="px-3 py-5 font-medium">
-                      Total Pending
+                      Total jugador
                     </th>
                     <th scope="col" className="px-4 py-5 font-medium">
-                      Total Paid
+                      Total Master
                     </th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 text-gray-900">
-                  {customers.map((customer) => (
-                    <tr key={customer.id} className="group">
+                  {players.map((player) => (
+                    <tr key={player.id} className="group">
                       <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
                         <div className="flex items-center gap-3">
                           <Image
-                            src={customer.image_url}
+                            src={player.image_url}
                             className="rounded-full"
-                            alt={`${customer.name}'s profile picture`}
+                            alt={`${player.name}'s profile picture`}
                             width={28}
                             height={28}
                           />
-                          <p>{customer.name}</p>
+                          <p>{player.name}</p>
                         </div>
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.email}
+                        {player.email}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_invoices}
+                        {player.total_Sheets}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_pending}
+                        {player.total_jugador}
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {customer.total_paid}
+                        {player.total_master}
                       </td>
                     </tr>
                   ))}
