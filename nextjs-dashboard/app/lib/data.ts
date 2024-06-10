@@ -49,9 +49,6 @@ export async function fetchLatestSheets() {
 
 export async function fetchCardData() {
   try {
-    // You can probably combine these into a single SQL search
-    // However, we are intentionally splitting them to demonstrate
-    // how to initialize multiple queries in parallel with JS.
     const SheetCountPromise = sql`SELECT COUNT(*) FROM Sheets`;
     const playerCountPromise = sql`SELECT COUNT(*) FROM players`;
     const SheetStatusPromise = sql`SELECT
@@ -141,22 +138,25 @@ export async function fetchSheetsPages(search: string) {
 
 export async function fetchSheetById(id: string) {
   try {
+
     const data = await sql<SheetForm>`
       SELECT
-        Sheets.id,
-        Sheets.player_id,
-        Sheets.amount,
-        Sheets.status
-      FROM Sheets
-      WHERE Sheets.id = ${id};
+        sheets.id,
+        sheets.player_id,
+        sheets.amount
+        
+      FROM sheets
+      WHERE sheets.id = ${id};
     `;
 
-    const Sheet = data.rows.map((Sheet) => ({
-      ...Sheet,
-      amount: Sheet.amount / 10,
+    console.log(data);
+    
+    const sheets = data.rows.map((sheets) => ({
+      ...sheets,
+      amount: sheets.amount / 10,
     }));
 
-    return Sheet[0];
+    return sheets[0];
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch Sheet.');

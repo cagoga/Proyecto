@@ -78,7 +78,6 @@ export type PlayerField = {
 
 export type SheetForm = {
   id: string;
-  customer_id: string;
+  player_id: string;
   amount: number;
-  status: 'jugador' | 'master';
 };

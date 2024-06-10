@@ -105,7 +105,7 @@ async function seedPlayers(client) {
       players.map(
         (player) => client.sql`
         INSERT INTO players (id, name, email, image_url, status)
-        VALUES (${player.id}, ${player.name}, ${player.email}, ${player.image_url},${player.status})
+        VALUES (${player.id}, ${player.name}, ${player.email}, ${player.image_url}, ${player.status})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

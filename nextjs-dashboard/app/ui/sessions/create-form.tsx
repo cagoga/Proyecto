@@ -40,14 +40,14 @@ export default function Form({ players }: { players: PlayerField[] }) {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="horas" className="mb-2 block text-sm font-medium">
+          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
             Indica el tiempo jugado
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="horas"
-                name="horas"
+                id="amount"
+                name="amount"
                 type="number"
                 step="0.01"
                 placeholder="Indica cuantas horas jugo"
