@@ -21,8 +21,6 @@ export const formatDateToLocal = (
 };
 
  export const generateYAxis = (hours: Hours[]) => {
-  // Calculate what labels we need to display on the y-axis
-  // based on highest record and in 1000s
   const yAxisLabels = [];
   const highestRecord = Math.max(...hours.map((month) => month.hours));
   const topLabel = Math.ceil(highestRecord / 1000) * 1000;
@@ -58,3 +56,4 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+

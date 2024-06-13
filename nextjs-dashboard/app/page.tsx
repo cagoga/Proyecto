@@ -1,7 +1,8 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import {vampiro} from '@/app/ui/fonts';
+import { vampiro } from '@/app/ui/fonts';
 import Image from 'next/image';
+import PrivacityCookies from './ui/privacity-cookies';
 
 
 
@@ -27,10 +28,11 @@ export default function PageIndex() {
           </Link>
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
-          <Image src="/campfireIndex.png" alt="dydlogo" width={1000} height={760} className='hidden md:block'/>
-          <Image src="/dydMvl.png" alt="dydlogomvl" width={560} height={620} className='block md:hidden'/>
+          <Image src="/campfireIndex.png" alt="dydlogo" width={1000} height={760} className='hidden md:block' />
+          <Image src="/dydMvl.png" alt="dydlogomvl" width={560} height={620} className='block md:hidden' />
         </div>
       </div>
+      <PrivacityCookies/>
     </main>
   );
 }

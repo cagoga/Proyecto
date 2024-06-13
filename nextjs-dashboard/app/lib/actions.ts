@@ -6,10 +6,11 @@ import { sql } from '@vercel/postgres'
 import { stat } from 'fs'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 
 import bcrypt from 'bcrypt'//falla
 
-import {sha256,sha224} from 'js-sha256'
+import { sha256, sha224 } from 'js-sha256'
 
 /* Creamos un "esquema" de validación de datos que vamos a mandar a la BBDD
  */
@@ -28,7 +29,7 @@ const CreateSheetSchema = Schema.omit({
     status: true
 })
 
-const UpdateInvoice = Schema.omit({
+const UpdateSheets = Schema.omit({
     id: true,
     date: true,
     status: true
@@ -67,7 +68,7 @@ export async function createSheet(formData: FormData) {
 //Update
 export async function updateSheets(id: string, formData: FormData) {
 
-    const { playerId, amount } = UpdateInvoice.parse({
+    const { playerId, amount } = UpdateSheets.parse({
         playerId: formData.get('playerId'),
         amount: formData.get('amount'),
     });
@@ -107,13 +108,17 @@ export async function login(formData: FormData) {
     const pass = formData.get('password') as string;
 
     const hashedPassword = sha256(pass);
-
-
-    const data: any = await sql`
+    var data: any = '';
+    try {
+        data = await sql`
     SELECT COUNT(*) FROM users WHERE email = ${email} and password = ${hashedPassword}
     `
+    } catch (error) {
+        return { message: 'Database Error: Failed to connect' };
+    }
 
-    data.rows[0].count == 0 ? redirect('/login/invalidLogin') : redirect('/dashboard') 
+    createCookie(formData)
+    data.rows[0].count == 0 ? redirect('/login/invalidLogin') : redirect('/dashboard')
 }
 
 export async function signUp(formData: FormData) {
@@ -123,12 +128,47 @@ export async function signUp(formData: FormData) {
     const pass = formData.get('password') as string;
 
     const hashedPassword = sha256(pass);
-    const existUser = 
 
-    
     await sql`
     INSERT INTO users (name, email, password)
     VALUES (${name},${email},${hashedPassword})
     `
+
+    //agregar insert to players y trycatch
     redirect('/dashboard')
 }
+
+export async function logOut() {
+    deleteCookie()
+    redirect('/')
+}
+
+//coockies
+
+export async function createCookie(formData:FormData) {
+
+    const name = 'Login'
+    const value = formData.get('email') as string;
+
+    cookies().set({
+        name: name,
+        value: value,
+        secure: true
+      })
+    
+}
+
+export async function deleteCookie() {
+
+    const name = 'Login'
+
+    cookies().delete(name)
+    
+}
+
+export async function validateCookie() {
+    const cookieStore = cookies()
+    const theme = cookieStore.get('Login') ? true : false
+
+    return theme
+  }

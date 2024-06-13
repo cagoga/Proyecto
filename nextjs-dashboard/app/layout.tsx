@@ -8,11 +8,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      {/* TODO: un nav con los botones de la pag */}
-      <body>
+    <html lang="en" className=''>
+      <body className=' grid-cols h-screen'>
         {children}
       </body>
+      <footer className='space-y-5 flex h-5 fixed items-center inset-x-0 bottom-0 self-start bg-red-950 px-6 py-3 text-sm font-medium text-white'>
+        Página creada por Carlos Gonzalez Garcia
+      </footer>
     </html>
   );
 }

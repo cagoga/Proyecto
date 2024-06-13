@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { UpdateInvoice, DeleteInvoice } from '@/app/ui/sessions/buttons';
-import InvoiceStatus from '@/app/ui/sessions/status';
+import SheetsStatus from '@/app/ui/sessions/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredSheets } from '@/app/lib/data';
 
@@ -37,7 +37,7 @@ export default async function InvoicesTable({
                     </div>
                     <p className="text-sm text-gray-500">{sheet.email}</p>
                   </div>
-                  <InvoiceStatus status={sheet.status} />
+                  <SheetsStatus status={sheet.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
