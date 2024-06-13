@@ -143,9 +143,13 @@ export async function logOut() {
     redirect('/')
 }
 
-//coockies
+/*
+coockies de login y privacidad
+*/
 
-export async function createCookie(formData:FormData) {
+
+//login
+export async function createCookie(formData: FormData) {
 
     const name = 'Login'
     const value = formData.get('email') as string;
@@ -154,8 +158,8 @@ export async function createCookie(formData:FormData) {
         name: name,
         value: value,
         secure: true
-      })
-    
+    })
+
 }
 
 export async function deleteCookie() {
@@ -163,12 +167,46 @@ export async function deleteCookie() {
     const name = 'Login'
 
     cookies().delete(name)
-    
+
 }
 
 export async function validateCookie() {
     const cookieStore = cookies()
-    const theme = cookieStore.get('Login') ? true : false
+    const theme = cookieStore.has('Login')
 
     return theme
-  }
+}
+
+//Privacidad
+
+export async function createCookiePrivacity() {
+
+    const name = 'Publicidad'
+
+    cookies().set({
+        name: name,
+        value: 'Aceptada',
+        secure: true
+    })
+    redirect('/')
+}
+
+export async function createEmptyCookiePrivacity() {
+    const name = 'Publicidad'
+
+    cookies().set({
+        name: name,
+        value: 'Rechazada',
+        secure: true
+    })
+
+    redirect('/')
+
+}
+
+export async function validateCookiePrivacity() {
+    const cookieStore = cookies()
+    const theme = cookieStore.has('Privacity')
+
+    return theme
+}
