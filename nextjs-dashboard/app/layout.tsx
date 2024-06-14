@@ -1,7 +1,5 @@
 //Este es el componente que envuelve a toda nuestar pagina como vemos en el return, aquí cargaremos los css globales, modulares, las fuentes y otros elementos para TODA LA PAGINA
 import '@/app/ui/global.css';
-import {aladin} from '@/app/ui/fonts';
-import PrivacityCookies from './ui/privacity-cookies';
 
 export default function RootLayout({
   children,

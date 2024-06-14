@@ -4,7 +4,7 @@ import Table from '@/app/ui/sessions/table';
 import { CreateInvoice } from '@/app/ui/sessions/buttons';
 import { aladin } from '@/app/ui/fonts';
 import { Suspense } from 'react';
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
+import { SheetsTableSkeleton } from '@/app/ui/skeletons';
 import { fetchSheetsPages } from '@/app/lib/data';
 
  
@@ -28,7 +28,7 @@ export default async function PageInvoices({
         <Search placeholder="Introduzca el nombre del jugador" />
         <CreateInvoice />
       </div>
-      <Suspense key={search + currentPage} fallback={<InvoicesTableSkeleton />}>
+      <Suspense key={search + currentPage} fallback={<SheetsTableSkeleton />}>
         <Table search={search} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">

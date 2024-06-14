@@ -151,6 +151,7 @@ coockies de login y privacidad
 //login
 export async function createCookie(formData: FormData) {
 
+
     const name = 'Login'
     const value = formData.get('email') as string;
 
@@ -171,10 +172,9 @@ export async function deleteCookie() {
 }
 
 export async function validateCookie() {
-    const cookieStore = cookies()
-    const theme = cookieStore.has('Login')
+    const exist = cookies().has('Login')
 
-    return theme
+    return exist
 }
 
 //Privacidad
@@ -182,12 +182,14 @@ export async function validateCookie() {
 export async function createCookiePrivacity() {
 
     const name = 'Publicidad'
+    const value = 'aceptada'
 
     cookies().set({
         name: name,
-        value: 'Aceptada',
+        value: value,
         secure: true
     })
+
     redirect('/')
 }
 
@@ -205,8 +207,7 @@ export async function createEmptyCookiePrivacity() {
 }
 
 export async function validateCookiePrivacity() {
-    const cookieStore = cookies()
-    const theme = cookieStore.has('Privacity')
-
-    return theme
+    const existCookie = cookies().get('Publicidad')
+    const exist = existCookie ? true : false
+    return exist as boolean
 }

@@ -2,11 +2,16 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { vampiro } from '@/app/ui/fonts';
 import Image from 'next/image';
-import PrivacityCookies from './ui/privacity-cookies';
+import PrivacityCookies from '@/app/ui/privacity-cookies';
+import PrivacityCookiesModal from '@/app/ui/privacity-cookies';
+import { validateCookie, validateCookiePrivacity } from './lib/actions';
 
 
 
 export default function PageIndex() {
+  const state = validateCookie
+  console.log(state)
+
   return (
     <main className="flex min-h-screen flex-col p-6">
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
@@ -32,7 +37,7 @@ export default function PageIndex() {
           <Image src="/dydMvl.png" alt="dydlogomvl" width={560} height={620} className='block md:hidden' />
         </div>
       </div>
-      <PrivacityCookies/>
-    </main>
+       <PrivacityCookiesModal state={state}/>
+     </main>
   );
 }
