@@ -4,7 +4,7 @@ import { Button } from './button';
 import { createCookiePrivacity, createEmptyCookiePrivacity } from '../lib/actions';
 import { useState } from 'react';
 
-export default function PrivacityCookies({sendDataToParent}) {
+export default function PrivacityCookies({sendDataToParent}:{sendDataToParent:any}) {
 
   const [data, setData] = useState(true);
   

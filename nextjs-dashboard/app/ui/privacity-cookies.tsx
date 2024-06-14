@@ -8,7 +8,7 @@ export default function PrivacityCookiesModal() {
   
   const [dataFromChild, setDataFromChild] = useState(true);
 
-  function handleDataFromChild(data) {
+  function handleDataFromChild(data : any) {
     setDataFromChild(data);
   }
 
