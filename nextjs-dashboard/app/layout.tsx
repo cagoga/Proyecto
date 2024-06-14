@@ -14,7 +14,6 @@ export default function RootLayout({
       <footer className='space-y-5 flex h-5 fixed items-center inset-x-0 bottom-0 self-start bg-red-950 px-6 py-3 text-sm font-medium text-white'>
         Página creada por Carlos Gonzalez Garcia
       </footer>
-    
     </html>
   );
 }

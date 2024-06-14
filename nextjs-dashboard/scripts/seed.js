@@ -58,8 +58,6 @@ async function seedSheet(client) {
   );
 `;
 
-    //console.log(`Created "sheets" table`);
-
     // Insertamos datos a la tabla "sheets"
     const insertedInvoices = await Promise.all(
       sheets.map(
@@ -70,8 +68,6 @@ async function seedSheet(client) {
       `,
       ),
     );
-
-    //console.log(`Seeded ${insertedInvoices.length} sheets`);
 
     return {
       createTable,
@@ -98,8 +94,6 @@ async function seedPlayers(client) {
       );
     `;
 
-    //console.log(`Created "players" table`);
-
     // Insertamos datos en la tabla "players"
     const insertedPlayers = await Promise.all(
       players.map(
@@ -110,8 +104,6 @@ async function seedPlayers(client) {
       `,
       ),
     );
-
-    //console.log(`Seeded ${insertedPlayers.length} players`);
 
     return {
       createTable,
@@ -133,8 +125,6 @@ async function seedHours(client) {//swap hours for hou
       );
     `;
 
-    //console.log(`Created "hours" table`);
-
     // Introducimos los datos en la tabla "hours"
     const insertedHours = await Promise.all(
       hours.map(
@@ -145,8 +135,6 @@ async function seedHours(client) {//swap hours for hou
       `,
       ),
     );
-
-    //console.log(`Seeded ${insertedRevenue.length} hours`);
 
     return {
       createTable,
