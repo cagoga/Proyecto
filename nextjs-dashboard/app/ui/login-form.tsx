@@ -2,7 +2,6 @@ import { aladin } from '@/app/ui/fonts';
 import {
   AtSymbolIcon,
   KeyIcon,
-  ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
@@ -62,7 +61,7 @@ export default function LoginForm() {
         </div>
         <Link
           href="/"
-          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-red-200"
+          className="flex h-10 items-center rounded-lg bg-red-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-red-200"
         >
           Cancel
         </Link>
@@ -73,7 +72,7 @@ export default function LoginForm() {
 
 function LoginButton() {
   return (
-    <Button className="mt-4 w-full" formAction={login}>
+    <Button className="mt-4 w-full bg-red-900" formAction={login}>
       Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>
   );
